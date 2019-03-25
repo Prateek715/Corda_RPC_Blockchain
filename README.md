@@ -50,3 +50,20 @@ net.corda.core.flows.ContractUpgradeFlow$Authorise
 net.corda.core.flows.ContractUpgradeFlow$Deauthorise
 net.corda.core.flows.ContractUpgradeFlow$Initiate
 ```
+
+9. **Use the command** 
+
+``` ruby
+start Initiator counterparty: PartyA , number: 2
+
+ ✅   Starting
+➡️   Done
+Flow completed with result: 3
+
+```
+
+
+
+
+
+
