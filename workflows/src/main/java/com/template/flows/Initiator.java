@@ -10,10 +10,27 @@ import net.corda.core.utilities.ProgressTracker;
 // ******************
 // * Initiator flow *
 // ******************
+import co.paralleluniverse.fibers.Suspendable;
+import net.corda.core.flows.*;
+import net.corda.core.identity.Party;
+import net.corda.core.utilities.ProgressTracker;
+
+// ******************
+// * Initiator flow *
+// ******************
 @InitiatingFlow
 @StartableByRPC
-public class Initiator extends FlowLogic<Void> {
+public class Initiator extends FlowLogic<Integer> {
+
+    private Party counterparty;
+    private Integer number;
+
     private final ProgressTracker progressTracker = new ProgressTracker();
+
+    public Initiator(Party counterparty , Integer number){
+        this.number=number;
+        this.counterparty=counterparty;
+    }
 
     @Override
     public ProgressTracker getProgressTracker() {
@@ -22,9 +39,19 @@ public class Initiator extends FlowLogic<Void> {
 
     @Suspendable
     @Override
-    public Void call() throws FlowException {
+    public Integer call() throws FlowException {
         // Initiator flow logic goes here.
 
-        return null;
+        FlowSession session=initiateFlow(counterparty);
+
+        session.send(number);
+
+        int rece=session.receive(Integer.class).unwrap(it->it);
+
+        return rece;
+
+
+
     }
 }
+
